@@ -1,4 +1,4 @@
-# 🎓 42 Cursus
+# 🎓 42 Common Core
 
 Welcome to my collection of projects and exercises completed throughout the 42 Common Core curriculum.
 
