@@ -1,0 +1,93 @@
+services:
+  nginx:
+    depends_on:
+      - wordpress
+    pull_policy: build
+    image: nginx
+    build: requirements/nginx
+    networks:
+      - wp_ng
+    container_name: nginx
+    volumes:
+      - wordpress:/wordpress
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    environment:
+      DOMAIN_NAME: $DOMAIN_NAME
+    secrets:
+      - SSL_CRT
+      - SSL_KEY
+
+  mariadb:
+    pull_policy: build
+    image: mariadb
+    build: requirements/mariadb
+    networks:
+      - wp_ma
+    container_name: mariadb
+    volumes:
+      - mariadb:/var/lib/mysql
+    environment:
+      MARIA_DB_NAME: $DB_NAME
+      MARIA_DB_USER: $DB_USER
+    secrets:
+      - DB_ROOT_PASSWORD
+      - DB_PASSWORD
+    restart: unless-stopped
+
+  wordpress:
+    pull_policy: build
+    image: wordpress
+    build: requirements/wordpress
+    networks:
+      - wp_ma
+      - wp_ng
+    container_name: wordpress
+    volumes:
+      - wordpress:/wordpress
+    depends_on:
+      - mariadb
+    environment:
+      WORDPRESS_DB_NAME: $DB_NAME
+      WORDPRESS_DB_USER: $DB_USER
+      WORDPRESS_DB_HOST: $DB_HOST
+      DOMAIN_NAME: $DOMAIN_NAME
+    secrets:
+      - DB_PASSWORD
+    restart: unless-stopped
+
+networks:
+  wp_ma:
+    name: wp_ma
+    driver: bridge
+  wp_ng:
+    name: wp_ng
+    driver: bridge
+
+volumes:
+  mariadb:
+    name: mariadb
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/$SUDO_USER/data/mariadb'
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/$SUDO_USER/data/wordpress'
+
+secrets:
+  DB_PASSWORD:
+    file: ../secrets/db_password.txt
+  DB_ROOT_PASSWORD:
+    file: ../secrets/db_root_password.txt
+  SSL_CRT:
+    file: ../secrets/certs/nginx.crt
+  SSL_KEY:
+    file: ../secrets/certs/nginx.key
