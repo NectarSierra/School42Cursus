@@ -6,7 +6,5 @@ Welcome to my collection of projects and exercises completed throughout the 42 C
 **42** is a free, peer-to-peer coding school with no teachers, no classes, and no prerequisites.  
 Learning happens through hands-on projects, collaboration, and problem-solving — all at your own pace.
 
-> ⚠️ I cannot upload the official subjects, as they are protected by copyright.  
-> 📘 For context, each project that needs explanation includes a README outlining the main ideas and objectives.
-
-Feel free to explore the repository and follow my progress!
+> I cannot upload the official subjects, as they are protected by copyright.  
+> For context, each project that needs explanation includes a README outlining the main ideas and objectives.
