@@ -1,4 +1,4 @@
-# School42 Cursus
+# My School42 Cursus
 
 This repository contains all the exercises I completed as part of the 42 Common Core curriculum.
 
